@@ -14,13 +14,15 @@ db =AWS::DynamoDB.new
 config_table = db.tables['batch_jobs'].load_schema
 node = config_table.items["#{ENV['batch_env']}"]
 
-if (File.exist?('/infra/work/staging/sys/batchContainer/stepRunByBatchStepRunner~batchContainerStep.runlock'))
-node.attributes.update do |u|
-              u.set(:status => "up")
-end
-else
-node.attributes.update do |u|
-              u.set(:status => "down")
-end
-
+loop do
+	if (File.exist?('/infra/work/staging/sys/batchContainer/stepRunByBatchStepRunner~batchContainerStep.runlock'))
+		node.attributes.update do |u|
+              		u.set(:status => "up")
+		end
+	else
+		node.attributes.update do |u|
+              		u.set(:status => "down")
+		end
+	end
+        sleep(15)
 end
