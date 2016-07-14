@@ -17,11 +17,11 @@ node = config_table.items["#{ENV['batch_env']}"]
 loop do
 	if (File.exist?('/infra/work/staging/sys/batchContainer/stepRunByBatchStepRunner~batchContainerStep.runlock'))
 		node.attributes.update do |u|
-              		u.set(:status => "up")
+              		u.set(:status => "running")
 		end
 	else
 		node.attributes.update do |u|
-              		u.set(:status => "down")
+              		u.set(:status => "stopped")
 		end
 	end
         sleep(15)
